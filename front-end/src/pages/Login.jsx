@@ -1,9 +1,12 @@
 import { useState } from "react";
 import "./Login.css";
+import { useNavigate } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -55,6 +58,10 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       setMessage("Login successful");
+
+      if (data.user.role === "salon") {
+        navigate("/salon/dashboard");
+      }
     } catch (error) {
       setMessage("Error");
     } finally {
