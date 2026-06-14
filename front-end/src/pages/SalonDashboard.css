@@ -1,0 +1,88 @@
+.salon-dashboard {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f7eef4;
+}
+
+.salon-header {
+  max-width: 1100px;
+  margin: 0 auto 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.salon-eyebrow {
+  margin-bottom: 6px;
+  color: #9b527d;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.salon-header h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.salon-subtitle {
+  margin: 8px 0 0;
+  color: #6f6570;
+}
+
+.salon-stats,
+.salon-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.salon-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.salon-card,
+.salon-panel {
+  background: #ffffff;
+  border: 1px solid #ead8e4;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.salon-card span {
+  display: block;
+  color: #6f6570;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.salon-card strong {
+  font-size: 30px;
+}
+
+.salon-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.salon-panel h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+}
+
+@media (max-width: 800px) {
+  .salon-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .salon-stats,
+  .salon-layout {
+    grid-template-columns: 1fr;
+  }
+}
