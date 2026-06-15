@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router";
 import "./SalonDashboard.css";
+import Navbar from "../components/Navbar";
 
 function SalonDashboard() {
   const navigate = useNavigate();
@@ -7,13 +8,16 @@ function SalonDashboard() {
   const user = storedUser ? JSON.parse(storedUser) : null;
 
   return (
-    <main className="salon-dashboard">
-      <header className="salon-header">
-        <div>
-          <p className="salon-eyebrow">Salon name</p>
-        </div>
-      </header>
-    </main>
+    <>
+      <Navbar />
+      <main className="salon-dashboard">
+        <header className="salon-header">
+          <div>
+            <p className="salon-eyebrow">Salon name</p>
+          </div>
+        </header>
+      </main>
+    </>
   );
 }
 
