@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 // import About from "../pages/About";
 import Login from "../pages/Login";
 import SalonDashboard from "../pages/SalonDashboard";
+import WorkerDashboard from "../pages/WorkerDashboard";
 
 function ProtectedRoute({ children, role }) {
   const token = localStorage.getItem("token");
@@ -39,6 +40,14 @@ export default function AppRouter() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/worker/dashboard"
+          element={
+            <ProtectedRoute role="worker">
+              <WorkerDashboard />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

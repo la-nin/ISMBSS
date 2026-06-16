@@ -62,6 +62,9 @@ function Login() {
       if (data.user.role === "salon") {
         navigate("/salon/dashboard");
       }
+      if (data.user.role === "worker") {
+        navigate("/worker/dashboard");
+      }
     } catch (error) {
       setMessage("Error");
     } finally {
