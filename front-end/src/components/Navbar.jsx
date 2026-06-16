@@ -14,6 +14,13 @@ const salonLinks = [
   { label: "Notifications", path: "salon/notifications" },
 ];
 
+const workerLinks = [
+  {label: "Dashboard", path: "/worker/dashboard"},
+  {label: "Schedule", path: "/worker/schedule"},
+  {label: "Profile", path: "/worker/profile"},
+  {label: "Notifications", path: "/worker/notifications"},
+]
+
 function Navbar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +28,11 @@ function Navbar() {
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
 
-  const links = user?.role == "salon" ? salonLinks : [];
+  const links = 
+    user?.role == "salon" 
+    ? salonLinks
+    : user?.role == "worker"
+    ? workerLinks : []
 
   function handleLogout() {
     localStorage.removeItem("token");
