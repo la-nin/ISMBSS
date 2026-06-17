@@ -1,3 +1,31 @@
+.salon-dashboard-content {
+  max-width: 1000px;
+  margin: 24px auto 0;
+}
+
+.salon-panel {
+  background: #ffffff;
+  border: 1px solid #ead8e4;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.service-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.service-description-field {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 700px) {
+  .service-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .salon-dashboard {
   min-height: 100vh;
   padding: 32px;
