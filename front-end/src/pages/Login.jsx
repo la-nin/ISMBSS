@@ -65,6 +65,9 @@ function Login() {
       if (data.user.role === "worker") {
         navigate("/worker/dashboard");
       }
+      if (data.user.role === "client") {
+        navigate("/client/dashboard");
+      }
     } catch (error) {
       setMessage("Error");
     } finally {
