@@ -10,11 +10,18 @@ function SalonServices() {
     duration_minutes: "",
     base_price: "",
     full_price: "",
+    image_url: "",
   });
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+
+  const [imageFile, setImageFile] = useState(null);
+
+  function handleImageChange(event) {
+    setImageFile(event.target.files[0]);
+  }
 
   async function loadServices() {
     const token = localStorage.getItem("token");
@@ -58,13 +65,23 @@ function SalonServices() {
     try {
       const token = localStorage.getItem("token");
 
+      const serviceFormData = new FormData();
+      serviceFormData.append("service_name", formData.service_name);
+      serviceFormData.append("description", formData.description);
+      serviceFormData.append("duration_minutes", formData.duration_minutes);
+      serviceFormData.append("base_price", formData.base_price);
+      serviceFormData.append("full_price", formData.full_price);
+
+      if (imageFile) {
+        serviceFormData.append("image", imageFile);
+      }
+
       const response = await fetch(`${API_URL}/api/salon/services`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData),
+        body: serviceFormData,
       });
 
       const data = await response.json();
@@ -82,7 +99,10 @@ function SalonServices() {
         duration_minutes: "",
         base_price: "",
         full_price: "",
+        image_url: "",
       });
+
+      setImageFile(null);
 
       loadServices();
     } catch {
@@ -145,6 +165,14 @@ function SalonServices() {
             required
           />
 
+          <input
+            type="file"
+            name="image"
+            className="form-control"
+            placeholder="Image URL"
+            onChange={handleImageChange}
+          />
+
           <textarea
             name="description"
             className="form-control service-description-field"
@@ -155,7 +183,11 @@ function SalonServices() {
           />
         </div>
 
-        <button type="submit" className="btn btn-dark mt-4" disabled={submitting}>
+        <button
+          type="submit"
+          className="btn btn-dark mt-4"
+          disabled={submitting}
+        >
           {submitting ? "Creating..." : "Create service"}
         </button>
       </form>
