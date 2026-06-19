@@ -1,0 +1,10 @@
+.client-dashboard {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f7eef4;
+}
+.client-services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
