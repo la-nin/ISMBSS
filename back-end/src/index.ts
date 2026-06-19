@@ -20,6 +20,8 @@ app.use(express.json());
 // Middleware for HTML form submissions
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/uploads", express.static("uploads"));
+
 app.get("/", (_req: Request, res: Response) => {
   res.send("Hello from Express 5 and TypeScript");
 });
