@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./ClientDashboard.css";
 import ServiceCard from "../components/ServiceCard";
+import Navbar from "../components/Navbar";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
@@ -10,6 +11,7 @@ function ClientDashboard() {
 
   const [services, setServices] = useState([]);
   const [message, setMessage] = useState([]);
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   useEffect(() => {
     async function loadServices() {
@@ -30,15 +32,21 @@ function ClientDashboard() {
   }, []);
 
   return (
-    <div>
+    <>
+      <Navbar
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+      />
       <main className="client-dashboard">
-        <section className="client-services-grid">
-          {services.map((service) => (
-            <ServiceCard key={service.id} service={service} />
-          ))}
-        </section>
+        {activeSection === "dashboard" && (
+          <section className="client-services-grid">
+            {services.map((service) => (
+              <ServiceCard key={service.id} service={service} />
+            ))}
+          </section>
+        )}
       </main>
-    </div>
+    </>
   );
 }
 
