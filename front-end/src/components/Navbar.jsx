@@ -15,10 +15,17 @@ const salonLinks = [
 ];
 
 const workerLinks = [
-  { label: "Dashboard", path: "/worker/dashboard" },
-  { label: "Schedule", path: "/worker/schedule" },
-  { label: "Profile", path: "/worker/profile" },
-  { label: "Notifications", path: "/worker/notifications" },
+  { label: "Dashboard", section: "dashboard" },
+  { label: "Schedule", section: "schedule" },
+  { label: "Profile", section: "profile" },
+  { label: "Notifications", section: "notifications" },
+];
+
+const clientLinks = [
+  { label: "Dashboard", section: "dashboard" },
+  { label: "My appointments", section: "appointments" },
+  { label: "Profile", section: "profile" },
+  { label: "Notifications", section: "notifications" },
 ];
 
 function Navbar({ activeSection, onSectionChange }) {
@@ -33,7 +40,9 @@ function Navbar({ activeSection, onSectionChange }) {
       ? salonLinks
       : user?.role == "worker"
         ? workerLinks
-        : [];
+        : user?.role == "client"
+          ? clientLinks
+          : [];
 
   function handleLogout() {
     localStorage.removeItem("token");
