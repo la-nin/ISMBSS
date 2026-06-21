@@ -40,25 +40,12 @@ async function getSalonIdByUserId(userId: number) {
   return rows[0]?.id;
 }
 
-router.get("/services", authenticateToken, async (req, res, next) => {
+router.get("/services", async (req, res, next) => {
   try {
-    const authReq = req as AuthenticatedRequest;
-
-    if (authReq.user?.role !== "salon") {
-      return res
-        .status(403)
-        .json({ message: "Only salons can access this route" });
-    }
-
-    const salonId = await getSalonIdByUserId(parseInt(authReq.user.userId));
-
-    if (!salonId) {
-      return res.status(404).json({ message: "Salon not found" });
-    }
-
     const [services] = await pool.execute(
-      `SELECT id, service_name, description, duration_minutes, base_price, full_price, is_active, image_url
-            FROM service`,
+      `SELECT service.id AS id, service.service_name, service.description, service.duration_minutes, service.base_price, service.full_price, service.is_active, service.image_url, salons.salon_name
+            FROM service
+            JOIN salons ON service.salon_id = salons.id`,
     );
 
     res.json({ success: true, services });
