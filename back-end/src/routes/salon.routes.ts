@@ -113,4 +113,91 @@ router.post(
   },
 );
 
+router.get("/discount-packages", authenticateToken, async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+
+    if (authReq.user?.role != "salon") {
+      return res
+        .status(403)
+        .json({ message: "Only salon users can access this route" });
+    }
+
+    const salonId = await getSalonIdByUserId(parseInt(authReq.user.userId));
+
+    if (!salonId) {
+      return res.status(404).json({ message: "salon not found" });
+    }
+
+    const [packages] = await pool.execute(
+      `SELECT id, title, description,
+      package_price, start_date, end_date, is_active
+      FROM discount_package
+      WHERE salon_id = ?`,
+      [salonId],
+    );
+
+    res.json({ success: true, packages });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/discount-packages", authenticateToken, async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+
+    if (authReq.user?.role !== "salon") {
+      return res
+        .status(403)
+        .json({ message: "Only salons can access this route" });
+    }
+
+    const salonId = await getSalonIdByUserId(parseInt(authReq.user.userId));
+
+    if (!salonId) {
+      return res.status(404).json({ message: "salon not found" });
+    }
+
+    const { title, description, package_price, start_date, end_date } =
+      req.body;
+
+    // const discount_value = discount_percentage === "" ? null : Number(discount_percentage)
+    // const package_value = package_price === "" ? null : Number(package_price)
+
+    if (!title || !start_date || !end_date || !package_price) {
+      return res.status(400).json({
+        message: "fill in the required fields: title, start date, end date.",
+      });
+    }
+
+    const [result] = await pool.execute<ResultSetHeader>(
+      `INSERT INTO discount_package (
+      salon_id,
+      title,
+      description,
+      package_price,
+      start_date,
+      end_date,
+      is_active
+      ) VALUES (?,?,?,?,?,?,TRUE)`,
+      [
+        salonId,
+        title,
+        description || null,
+        package_price,
+        start_date,
+        end_date,
+      ],
+    );
+    res.status(201).json({
+      success: true,
+      message: "Discount package sucessfully created",
+      packageId: result.insertId,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
