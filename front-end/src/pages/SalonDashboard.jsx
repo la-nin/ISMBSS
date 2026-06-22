@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./SalonDashboard.css";
 import Navbar from "../components/Navbar";
 import SalonServices from "../components/SalonServices";
+import SalonDiscounts from "../components/SalonDiscounts";
 
 function SalonDashboard() {
   const navigate = useNavigate();
@@ -37,6 +38,8 @@ function SalonDashboard() {
             <h2>appointments</h2>
           </div>
         )}
+
+        {activeSection === "discounts" && <SalonDiscounts />}
       </main>
     </>
   );
