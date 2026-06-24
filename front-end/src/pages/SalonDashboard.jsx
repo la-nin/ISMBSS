@@ -4,6 +4,7 @@ import "./SalonDashboard.css";
 import Navbar from "../components/Navbar";
 import SalonServices from "../components/SalonServices";
 import SalonDiscounts from "../components/SalonDiscounts";
+import SalonProfile from "../components/SalonProfile";
 
 function SalonDashboard() {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ function SalonDashboard() {
         )}
 
         {activeSection === "discounts" && <SalonDiscounts />}
+        {activeSection === "profile" && <SalonProfile />}
       </main>
     </>
   );
