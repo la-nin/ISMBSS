@@ -200,4 +200,116 @@ router.post("/discount-packages", authenticateToken, async (req, res, next) => {
   }
 });
 
+router.put("/profile", authenticateToken, async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+
+    if (authReq.user?.role !== "salon") {
+      return res
+        .status(403)
+        .json({ message: "Only salons can visit this route" });
+    }
+
+    const userId = parseInt(authReq.user.userId);
+    const salonId = await getSalonIdByUserId(userId);
+
+    if (!salonId) {
+      return res.status(404).json({ message: "Salon not found" });
+    }
+
+    const {
+      salon_name,
+      description,
+      address,
+      city,
+      cancellation_days_limit,
+      email,
+      phone_number,
+    } = req.body;
+
+    if (!salon_name || !email || !phone_number || !address || !city) {
+      return res.status(400).json({
+        message: "Enter salon name, email, phone number, address, city",
+      });
+    }
+
+    await pool.execute(
+      `UPDATE salons
+       SET 
+        salon_name = ?,
+        description = ?,
+        address = ?,
+        city = ?,
+        cancellation_days_limit = ?
+       WHERE id = ?`,
+      [
+        salon_name,
+        description || null,
+        address,
+        city,
+        cancellation_days_limit || 0,
+        salonId,
+      ],
+    );
+
+    await pool.execute(
+      `UPDATE users
+      SET email = ?,
+      phone_number = ?
+      WHERE id = ?`,
+      [email, phone_number, userId],
+    );
+
+    res.json({
+      success: true,
+      message: "Salon profile updated",
+    });
+  } catch (error: any) {
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json({ message: "This email is already used" });
+    }
+
+    next(error);
+  }
+});
+
+router.get("/profile", authenticateToken, async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+
+    if (authReq.user?.role !== "salon") {
+      return res
+        .status(403)
+        .json({ message: "Only a salon user can visit this route" });
+    }
+
+    const salonId = await getSalonIdByUserId(parseInt(authReq.user.userId));
+
+    if (!salonId) {
+      return res.status(403).json({ message: "Salon not found" });
+    }
+
+    const [rows] = await pool.execute<RowDataPacket[]>(
+      `SELECT
+      salons.id,
+      salons.salon_name,
+      salons.description,
+      salons.address,
+      salons.city,
+      salons.cancellation_days_limit,
+      salons.is_verified,
+      users.email,
+      users.phone_number
+      FROM salons
+      JOIN users ON salons.user_id = users.id
+      WHERE salons.id = ?`,
+      [salonId],
+    );
+
+    res.json({ success: true, profile: rows[0] });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
