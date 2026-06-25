@@ -7,6 +7,8 @@ import Login from "../pages/Login";
 import SalonDashboard from "../pages/SalonDashboard";
 import WorkerDashboard from "../pages/WorkerDashboard";
 import ClientDashboard from "../pages/ClientDashboard";
+import SignupForm from "../pages/SignupForm";
+import Signup from "../pages/Signup";
 
 function ProtectedRoute({ children, role }) {
   const token = localStorage.getItem("token");
@@ -33,6 +35,9 @@ export default function AppRouter() {
         <Route path="/about" element={<About />} /> */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/client" element={<SignupForm role="client" />} />
+        <Route path="/signup/salon" element={<SignupForm role="salon" />} />
         <Route
           path="/salon/dashboard"
           element={

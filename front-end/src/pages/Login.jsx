@@ -120,6 +120,14 @@ function Login() {
           >
             {submitting ? "Signing in..." : "Sign in"}
           </button>
+
+          <button
+            type="button"
+            className="btn btn-outline-dark w-100 mt-3"
+            onClick={() => navigate("/signup ")}
+          >
+            Sign up
+          </button>
         </form>
       </section>
     </main>
