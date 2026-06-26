@@ -2,7 +2,11 @@ import "./ServiceCard.css";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
-function ServiceCard({ service }) {
+function ServiceCard({
+  service,
+  showBookButton = true,
+  showEditButton = false,
+}) {
   const imageUrl = service.image_url ? `${API_URL}${service.image_url}` : null;
 
   return (
@@ -30,9 +34,17 @@ function ServiceCard({ service }) {
           <p>Price: {service.full_price} euros</p>
         </div>
 
-        <button type="button" className="btn btn-dark w-50">
-          Book
-        </button>
+        {showBookButton && (
+          <button type="button" className="btn btn-dark w-50">
+            Book
+          </button>
+        )}
+
+        {showEditButton && (
+          <button type="button" className="btn btn-dark w-50">
+            Edit
+          </button>
+        )}
       </div>
     </article>
   );
