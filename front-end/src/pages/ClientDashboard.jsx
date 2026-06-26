@@ -41,7 +41,11 @@ function ClientDashboard() {
         {activeSection === "dashboard" && (
           <section className="client-services-grid">
             {services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
+              <ServiceCard
+                service={service}
+                showBookButton={true}
+                showEditButton={false}
+              />
             ))}
           </section>
         )}
