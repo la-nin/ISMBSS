@@ -26,7 +26,7 @@ function SalonServices() {
   async function loadServices() {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${API_URL}/api/salon/services`, {
+    const response = await fetch(`${API_URL}/api/salon/my-services`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

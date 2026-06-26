@@ -40,6 +40,35 @@ async function getSalonIdByUserId(userId: number) {
   return rows[0]?.id;
 }
 
+router.get("/my-services", authenticateToken, async (req, res, next) => {
+  try {
+    const authReq = req as AuthenticatedRequest;
+
+    if (authReq.user?.role !== "salon") {
+      return res
+        .status(403)
+        .json({ message: "Only salons may access this route" });
+    }
+
+    const salonId = await getSalonIdByUserId(parseInt(authReq.user.userId));
+
+    if (!salonId) {
+      return res.status(403).json({ message: "Salon not found" });
+    }
+
+    const [services] = await pool.execute(
+      `SELECT id, service_name, description, duration_minutes, base_price, full_price, is_active, image_url
+      FROM service
+      WHERE salon_id = ?`,
+      [salonId],
+    );
+
+    res.json({ success: true, services });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/services", async (req, res, next) => {
   try {
     const [services] = await pool.execute(
