@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import "./ClientDashboard.css";
 import ServiceCard from "../components/ServiceCard";
 import Navbar from "../components/Navbar";
+import { useNavigate } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function ClientDashboard() {
+  const navigate = useNavigate();
+
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
 
@@ -42,9 +45,15 @@ function ClientDashboard() {
           <section className="client-services-grid">
             {services.map((service) => (
               <ServiceCard
+                key={service.id}
                 service={service}
                 showBookButton={true}
                 showEditButton={false}
+                onBook={(selectedService) => {
+                  navigate(`/client/book/${selectedService.id}`, {
+                    state: { service: selectedService },
+                  });
+                }}
               />
             ))}
           </section>
