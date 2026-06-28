@@ -6,6 +6,7 @@ function ServiceCard({
   service,
   showBookButton = true,
   showEditButton = false,
+  onBook,
 }) {
   const imageUrl = service.image_url ? `${API_URL}${service.image_url}` : null;
 
@@ -35,7 +36,11 @@ function ServiceCard({
         </div>
 
         {showBookButton && (
-          <button type="button" className="btn btn-dark w-50">
+          <button
+            type="button"
+            className="btn btn-dark w-50"
+            onClick={() => onBook(service)}
+          >
             Book
           </button>
         )}

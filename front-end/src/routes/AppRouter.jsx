@@ -9,6 +9,7 @@ import WorkerDashboard from "../pages/WorkerDashboard";
 import ClientDashboard from "../pages/ClientDashboard";
 import SignupForm from "../pages/SignupForm";
 import Signup from "../pages/Signup";
+import BookingPage from "../pages/BookingPage";
 
 function ProtectedRoute({ children, role }) {
   const token = localStorage.getItem("token");
@@ -33,6 +34,14 @@ export default function AppRouter() {
         {/* <Route path="/news" element={<News />} />
         <Route path="/news/:id" element={<SingleNews />} />
         <Route path="/about" element={<About />} /> */}
+        <Route
+          path="/client/book/:serviceId"
+          element={
+            <ProtectedRoute role="client">
+              <BookingPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

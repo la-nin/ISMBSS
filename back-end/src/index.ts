@@ -3,6 +3,7 @@ import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import salonRoutes from "./routes/salon.routes.js";
+import appointmentRoutes from "./routes/appointment.routes.js";
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -33,6 +34,8 @@ app.get("/", (_req: Request, res: Response) => {
 app.use("/api/auth", authRoutes);
 
 app.use("/api/salon", salonRoutes);
+
+app.use("/api/book-appointment", appointmentRoutes);
 
 // Central error handler
 app.use((error: unknown, _req: Request, res: Response, _next: NextFunction) => {
